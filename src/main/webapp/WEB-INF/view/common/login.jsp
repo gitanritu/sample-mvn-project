@@ -31,7 +31,7 @@
     </p>
 
     <p>
-        <label for="j_password">密码:</label> <input id="j_password"
+        <label for="j_password">密  码:</label> <input id="j_password"
                                                         name="j_password" type="password" />
     </p>
 

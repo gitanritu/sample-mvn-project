@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:sec="http://www.springframework.org/schema/security"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    ">
+
+    <sec:http auto-config="true"  access-denied-page="/denied"  >
+        <sec:form-login
+                login-page="/login"
+                default-target-url="/topMenu"
+                authentication-failure-url="/login?failure=true"
+        />
+        <!--permitAll编译报错-->
+        <sec:intercept-url pattern="/login"   />
+        <sec:intercept-url pattern="/topMenu"   access="ROLE_user,ROLE_admin"/>
+
+    </sec:http>
+    <sec:authentication-manager>
+        <sec:authentication-provider>
+            <sec:user-service>
+                <sec:user name="tom" password="tom" authorities="ROLE_user"/>
+                <sec:user name="git" password="git" authorities="ROLE_manager"/>
+            </sec:user-service>
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+
+</beans>

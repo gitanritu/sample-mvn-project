@@ -17,7 +17,7 @@ public class LoginLogoutController {
         System.out.println("LoginLogoutController");
     }
 
-//    @RequestMapping(value = "/topMenu",method=RequestMethod.GET)
+    //    @RequestMapping(value = "/topMenu",method=RequestMethod.GET)
 //    public String showtopMenu(){
 //        System.out.println("topMenu");
 //        return "topMenu";
@@ -34,46 +34,54 @@ public class LoginLogoutController {
         return FW_TO_LOGIN_PAGE;
     }
 
-    @RequestMapping(value = "/login",params={"success"},method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/topMenu",method = RequestMethod.GET)
     public String success(){
         System.out.println("success.......");
         return "common/topMenu";
     }
-    /**
-     * 指向登录页面
-     */
-    @RequestMapping(value = "/login1", method = RequestMethod.GET)
-    public String getLoginPage(
-//            @RequestParam(value = "error", required = false)
-           boolean error,
-            ModelMap model)
-    {
 
-        logger.debug("Received request to show login page");
-
-        if (error == true) {
-            // Assign an error message
-            model.put("error",
-                    "You have entered an invalid username or password!");
-        } else {
-            model.put("error", "");
-        }
-        return "loginpage";
-
+    @RequestMapping(value = "/denied",method = RequestMethod.GET)
+    public String getDeniedPage(){
+        System.out.println("denied.......");
+        return "common/accessdenied";
     }
 
-    /**
-     * 指定无访问额权限页面
-     *
-     * @return
-     */
-    @RequestMapping(value = "/denied", method = RequestMethod.GET)
-    public String getDeniedPage() {
+//    /**
+//     * 指向登录页面
+//     */
+//    @RequestMapping(value = "/login1", method = RequestMethod.GET)
+//    public String getLoginPage(
+////            @RequestParam(value = "error", required = false)
+//           boolean error,
+//            ModelMap model)
+//    {
+//
+//        logger.debug("Received request to show login page");
+//
+//        if (error == true) {
+//            // Assign an error message
+//            model.put("error",
+//                    "You have entered an invalid username or password!");
+//        } else {
+//            model.put("error", "");
+//        }
+//        return "loginpage";
+//
+//    }
 
-        logger.debug("Received request to show denied page");
-
-        return "deniedpage";
-
-    }
+//    /**
+//     * 指定无访问额权限页面
+//     *
+//     * @return
+//     */
+//    @RequestMapping(value = "/denied", method = RequestMethod.GET)
+//    public String getDeniedPage() {
+//
+//        logger.debug("Received request to show denied page");
+//
+//        return "deniedpage";
+//
+//    }
 
 }
+
