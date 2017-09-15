@@ -7,17 +7,21 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
     ">
 
-    <sec:http auto-config="true"  access-denied-page="/denied"  >
+    <sec:http pattern="/resources/**" security="none"/>
+
+    <!--permitAll,hasAnyRole,hasRole利用する場合、use-expressions="true"追加必要-->
+    <sec:http auto-config="true"  access-denied-page="/denied" use-expressions="true" >
         <sec:form-login
                 login-page="/login"
                 default-target-url="/topMenu"
                 authentication-failure-url="/login?failure=true"
         />
         <!--permitAll编译报错-->
-        <sec:intercept-url pattern="/login"   />
-        <sec:intercept-url pattern="/topMenu"   access="ROLE_user,ROLE_admin"/>
+        <sec:intercept-url pattern="/login"   access="permitAll" />
+        <sec:intercept-url pattern="/topMenu"  access="hasAnyRole('ROLE_user,ROLE_admin')" />
 
     </sec:http>
+
     <sec:authentication-manager>
         <sec:authentication-provider>
             <sec:user-service>

@@ -4,6 +4,17 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
+
+    <servlet>
+        <servlet-name>samplePrjServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:samplePrjServlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -11,25 +22,28 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:applicationContext.xml,
-            classpath:spring-security.xml
-        </param-value>
-    </context-param>
+            classpath:spring-mybatis.xml,
+            <!--classpath:spring-security.xml,-->
+            classpath:spring-dao-security.xml
+ </param-value>
+</context-param>
 
 
-<servlet>
-     <servlet-name>samplePrjServlet</servlet-name>
-     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:samplePrjServlet.xml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-</servlet>
 
-    <servlet-mapping>
-      <servlet-name>samplePrjServlet</servlet-name>
-      <url-pattern>/</url-pattern>
-    </servlet-mapping>
+
+<servlet-mapping>
+<servlet-name>samplePrjServlet</servlet-name>
+<url-pattern>/</url-pattern>
+</servlet-mapping>
+
+
+<!--意思是说, 每当一个session结束的时候, 该监听器都会通知SessionRegistryImpl来删除这个session的信息. 这是因为SessionRegistryImpl实现了ApplicationListener<SessionDestroyedEvent>接口.
+当一个session结束时, Spring容器会自动通知它, 然后它会调用onApplicationEvent()方法来删除对应的session信息.-->
+
+    <!--http://blog.csdn.net/py_xin/article/details/52640036-->
+    <listener>
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
 
 
     <!-- Spring Secutiry4.1的过滤器链配置 -->
@@ -39,10 +53,9 @@
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
     <filter-mapping>
-    <filter-name>springSecurityFilterChain</filter-name>
-    <url-pattern>/*</url-pattern>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
-
 
 
 </web-app>

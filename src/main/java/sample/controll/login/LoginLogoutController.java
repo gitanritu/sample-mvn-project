@@ -2,9 +2,14 @@ package sample.controll.login;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import sample.service.login.TestService;
+
+import javax.inject.Inject;
+
 
 @Controller
 //@RequestMapping("auth")
@@ -12,6 +17,9 @@ public class LoginLogoutController {
     private static final String FW_TO_LOGIN_PAGE = "common/login";
 
     protected static Logger logger = Logger.getLogger("controller");
+
+//    @Inject
+//    private TestService testService;
 
     public LoginLogoutController() {
         System.out.println("LoginLogoutController");
@@ -29,8 +37,11 @@ public class LoginLogoutController {
     }
 
     @RequestMapping(value = "/login",params={"failure"},method = {RequestMethod.GET, RequestMethod.POST})
-    public String failure(){
-        System.out.println("failure.......");
+    public String failure(Model model){
+        System.out.println("failure.......1122");
+
+           // model.addAttribute(ResultMessages.error().add("e.ad.fw.6000"));
+
         return FW_TO_LOGIN_PAGE;
     }
 
@@ -45,6 +56,12 @@ public class LoginLogoutController {
         System.out.println("denied.......");
         return "common/accessdenied";
     }
+
+//    @RequestMapping(value = "/test",method=RequestMethod.POST)
+//    public String test(){
+//        testService.doTest();
+//        return FW_TO_LOGIN_PAGE;
+//    }
 
 //    /**
 //     * 指向登录页面
