@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+             http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    ">
+
+    <sec:http pattern="/resources/**" security="none"/>
+
+    <!--permitAll,hasAnyRole,hasRole利用する場合、use-expressions="true"追加必要-->
+    <sec:http auto-config="true"  access-denied-page="/denied" use-expressions="true" >
+        <sec:form-login
+                login-page="/login"
+                default-target-url="/topMenu"
+                authentication-failure-url="/login?failure=true"
+        />
+
+        <sec:intercept-url pattern="/login"   access="permitAll" />
+        <sec:intercept-url pattern="/topMenu"  access="hasAnyRole('ROLE_user,ROLE_admin')" />
+
+    </sec:http>
+
+
+
+    <!--
+        <sec:authentication-manager>
+            <sec:authentication-provider>
+                <sec:user-service>
+                    <sec:user name="tom" password="tom" authorities="ROLE_user"/>
+                <sec:user name="git" password="git" authorities="ROLE_manager"/>
+            </sec:user-service>
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+-->
+
+
+    <bean id="accountUserDetailsService"  class="sample.service.login.AccountUserDetailsService" >
+    </bean>
+
+    <sec:authentication-manager>
+        <sec:authentication-provider user-service-ref="accountUserDetailsService">
+            <!--    <sec:password-encoder ref="passwordEncoder" />-->
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+    <!--<bean id="passwordEncoder"
+          class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />-->
+
+    <!--下記のcomponent-scanはsamplePrjServletから移した、AccountUserDetailsService初期化時にAccountDao未初期化問題を解決した-->
+    <context:component-scan base-package="sample.controll"/>
+    <context:component-scan base-package="sample.domain"/>
+    <context:component-scan base-package="sample.service"/>
+    <context:component-scan base-package="sample.repository"/>
+    <mvc:annotation-driven />
+
+</beans>
